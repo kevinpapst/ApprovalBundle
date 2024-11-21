@@ -27,10 +27,11 @@ class BreakTimeCheckToolGER
     {
         $errors = [];
 
-        $customerId = (int) $this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, null);
+        $customerId = $this->settingsTool->getConfiguration(ConfigEnum::CUSTOMER_FOR_FREE_DAYS, null);
         if ($customerId !== null) {
             $customerId = (int) $customerId;
         }
+
         $offdays = [];
         foreach ($timesheets as $timesheet) {
             if ($timesheet->getProject()->getCustomer()->getId() === $customerId) {

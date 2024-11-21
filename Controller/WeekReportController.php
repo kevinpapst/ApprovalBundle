@@ -49,17 +49,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class WeekReportController extends BaseApprovalController
 {
     public function __construct(
-        private SettingsTool $settingsTool,
-        private SecurityTool $securityTool,
-        private UserRepository $userRepository,
-        private ApprovalHistoryRepository $approvalHistoryRepository,
-        private ApprovalRepository $approvalRepository,
-        private ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
-        private Formatting $formatting,
-        private TimesheetRepository $timesheetRepository,
-        private ApprovalTimesheetRepository $approvalTimesheetRepository,
-        private BreakTimeCheckToolGER $breakTimeCheckToolGER,
-        private ReportRepository $reportRepository
+        private readonly SettingsTool $settingsTool,
+        private readonly SecurityTool $securityTool,
+        private readonly UserRepository $userRepository,
+        private readonly ApprovalHistoryRepository $approvalHistoryRepository,
+        private readonly ApprovalRepository $approvalRepository,
+        private readonly ApprovalWorkdayHistoryRepository $approvalWorkdayHistoryRepository,
+        private readonly Formatting $formatting,
+        private readonly TimesheetRepository $timesheetRepository,
+        private readonly ApprovalTimesheetRepository $approvalTimesheetRepository,
+        private readonly BreakTimeCheckToolGER $breakTimeCheckToolGER,
+        private readonly ReportRepository $reportRepository
     ) {
     }
 
@@ -94,6 +94,9 @@ class WeekReportController extends BaseApprovalController
         $end = $dateTimeFactory->getEndOfWeek($values->getDate());
         $selectedUser = $values->getUser();
         $startWeek = $values->getDate();
+        if (!$startWeek instanceof \DateTimeInterface) {
+            $startWeek = new DateTime();
+        }
 
         $previous = clone $start;
         $previous->modify('-1 week');
@@ -130,7 +133,7 @@ class WeekReportController extends BaseApprovalController
 
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($selectedUser, $startWeek),
-            'week' => $this->formatting->parseDate($startWeek instanceof DateTime ? $startWeek : new DateTime($startWeek)),
+            'week' => $this->formatting->parseDate($startWeek),
             'box_id' => 'user-week-report-box',
             'form' => $form->createView(),
             'days' => new DailyStatistic($start, $end, $selectedUser),

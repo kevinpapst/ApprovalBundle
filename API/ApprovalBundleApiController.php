@@ -18,6 +18,7 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use KimaiPlugin\ApprovalBundle\Entity\Approval;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalHistory;
 use KimaiPlugin\ApprovalBundle\Entity\ApprovalStatus;
+use KimaiPlugin\ApprovalBundle\Enumeration\ConfigEnum;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalHistoryRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalRepository;
 use KimaiPlugin\ApprovalBundle\Repository\ApprovalStatusRepository;
@@ -36,17 +37,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ApprovalBundleApiController extends BaseApiController
 {
     public function __construct(
-        private ViewHandlerInterface $viewHandler,
-        private UserRepository $userRepository,
-        private EmailTool $emailTool,
-        private SettingsTool $settingsTool,
-        private UrlGeneratorInterface $urlGenerator,
-        private ApprovalRepository $approvalRepository,
-        private ApprovalHistoryRepository $approvalHistoryRepository,
-        private ApprovalStatusRepository $approvalStatusRepository,
-        private AuthorizationCheckerInterface $security,
-        private TranslatorInterface $translator,
-        private LockdownRepository $lockdownRepository
+        private readonly ViewHandlerInterface $viewHandler,
+        private readonly UserRepository $userRepository,
+        private readonly EmailTool $emailTool,
+        private readonly SettingsTool $settingsTool,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly ApprovalRepository $approvalRepository,
+        private readonly ApprovalHistoryRepository $approvalHistoryRepository,
+        private readonly ApprovalStatusRepository $approvalStatusRepository,
+        private readonly AuthorizationCheckerInterface $security,
+        private readonly TranslatorInterface $translator,
+        private readonly LockdownRepository $lockdownRepository
     ) {
     }
 

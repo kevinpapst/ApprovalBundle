@@ -14,23 +14,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class Formatting
 {
-    public function __construct(private TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
-    public function parseDate(DateTime $dateTime)
+    public function parseDate(\DateTimeInterface $dateTime): string
     {
-        $weekNumber = (clone $dateTime)->format('W');
+        $dateTime = DateTime::createFromInterface($dateTime);
+        $weekNumber = $dateTime->format('W');
 
-        if ((clone $dateTime)->format('D') === 'Mon') {
-            $startWeekDay = (clone $dateTime)->format('d.m.Y');
+        if ($dateTime->format('D') === 'Mon') {
+            $startWeekDay = $dateTime->format('d.m.Y');
         } else {
             $startWeekDay = (clone $dateTime)->modify('last monday')->format('d.m.Y');
         }
 
         $endWeekDay = (clone $dateTime)->modify('next sunday')->format('d.m.Y');
 
-        return (clone $dateTime)->format('F Y') . ' - ' . $this->translator->trans('agendaWeek') . ' ' . $weekNumber . ' [' . $startWeekDay . ' - ' . $endWeekDay . ']';
+        return $dateTime->format('F Y') . ' - ' . $this->translator->trans('agendaWeek') . ' ' . $weekNumber . ' [' . $startWeekDay . ' - ' . $endWeekDay . ']';
     }
 
     public function formatDuration(int $duration): string
